@@ -15,5 +15,7 @@ class Package(Base):
     ClientID = Column(Integer, index=True)
     WarehouseID = Column(Integer, index=True)
     status = Column(String(127), index=True)
+    OrderID = Column(Integer, nullable=True, index=True)
+    DriverID = Column(Integer, nullable=True, index=True)
 
     

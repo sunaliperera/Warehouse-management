@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends, status
 from pydantic import BaseModel
-from typing import Annotated
+from typing import Annotated, Optional
 import models
 from database import SessionLocal, engine
 from sqlalchemy.orm import Session
@@ -14,10 +14,11 @@ class WarehouseBase(BaseModel):
     capacity: int
 
 class packageBase(BaseModel):
-    packageID: int
     clientID: int
     warehouseID: int
     status: str
+    orderID: Optional[int] = None
+    driverID: Optional[int] = None
 
 
 def get_db():
@@ -57,10 +58,11 @@ async def read_warehouse(warehouse_id: int, db: db_dependency):
 @app.post("/package", status_code=status.HTTP_201_CREATED)
 async def create_package(package: packageBase, db: db_dependency):
     db_package = models.Package(
-        PackageID=package.packageID,
         ClientID=package.clientID,
         WarehouseID=package.warehouseID,
-        status=package.status
+        status=package.status,
+        OrderID=package.orderID,
+        DriverID=package.driverID
     )
     db.add(db_package)
     db.commit()
