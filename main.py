@@ -10,6 +10,7 @@ models.Base.metadata.create_all(bind=engine)
 
 class WarehouseBase(BaseModel):
     warehouseID: int
+    clientID: int
     location: str
     capacity: int
 
@@ -35,6 +36,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 async def create_warehouse(warehouse: WarehouseBase, db: db_dependency):
     db_warehouse = models.Warehouse(
         WarehouseID=warehouse.warehouseID,
+        ClientID=warehouse.clientID,
         location=warehouse.location,
         capacity=warehouse.capacity
     )
@@ -45,7 +47,7 @@ async def create_warehouse(warehouse: WarehouseBase, db: db_dependency):
 
 @app.get("/warehouse", status_code=status.HTTP_200_OK)
 async def read_all_warehouses(db: db_dependency):
-    warehouses = db.query(models.Warehouse).all()
+    warehouses = db.query(models.Warehouse).all() 
     return warehouses
 
 @app.get("/warehouse/{warehouse_id}", status_code=status.HTTP_200_OK)

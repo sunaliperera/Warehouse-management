@@ -5,6 +5,7 @@ class Warehouse(Base):
     __tablename__ = "warehouses"
 
     WarehouseID = Column(Integer, primary_key=True, index=True)
+    ClientID = Column(Integer, index=True)
     location = Column(String(255), index=True)
     capacity = Column(Integer)
 
